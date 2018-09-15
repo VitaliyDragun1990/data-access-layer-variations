@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- Properties -->
+    <context:property-placeholder location="classpath:application.properties"/>
+
+    <!--ConnectionManager-->
+    <bean id="connectionManager"
+          class="com.revenat.serviceLayer.dataAPI_JdbcImpl.connectionManagerImpl.MySQLSimpleConnectionManager">
+        <constructor-arg name="databaseName" value="${database}"/>
+        <constructor-arg name="login" value="${login}"/>
+        <constructor-arg name="password" value="${password}"/>
+    </bean>
+
+    <!--DaoFactory-->
+    <bean id="daoFactoryJdbc" class="com.revenat.serviceLayer.dataAPI_JdbcImpl.daoJdbcImpl.DaoFactoryJdbcImpl"/>
+
+    <!--Executor-->
+    <bean id="executor" class="com.revenat.serviceLayer.dataAPI_JdbcImpl.executorsImpl.ExecutorImpl"/>
+
+    <!--CacheConfiguration-->
+    <bean name="cacheConfiguration" class="com.revenat.simple_cache.cacheImpl.CacheConfiguration" factory-method="forIdleCache">
+        <constructor-arg name="idleTimeMs" value="${cacheIdleTimeMs}"/>
+        <constructor-arg name="maxElements" value="${maxCacheSize}"/>
+    </bean>
+
+    <!--CacheEngine-->
+    <bean id="cacheEngine" class="com.revenat.simple_cache.cacheImpl.CacheEngineImpl">
+        <constructor-arg name="conf" ref="cacheConfiguration"/>
+    </bean>
+
+    <!--UserCacheService-->
+    <bean id="cacheService" class="com.revenat.serviceLayer.dataAPI_JdbcImpl.cacheServiceImpl.UserCacheService">
+        <constructor-arg name="cache" ref="cacheEngine"/>
+    </bean>
+
+    <!--UserServiceJdbcImpl-->
+    <bean id="userServiceJdbc"
+          class="com.revenat.serviceLayer.dataAPI_JdbcImpl.userService_JdbcImpl.UserServiceJdbcImpl">
+        <constructor-arg name="connectionManager" ref="connectionManager"/>
+        <constructor-arg name="daoFactory" ref="daoFactoryJdbc"/>
+        <constructor-arg name="executor" ref="executor"/>
+        <constructor-arg name="cacheService" ref="cacheService"/>
+    </bean>
+</beans>

@@ -17,12 +17,19 @@
     </properties>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
-        <!--<dependency>-->
-        <!--<groupId>org.springframework</groupId>-->
-        <!--<artifactId>spring-context</artifactId>-->
-        <!--<version>4.3.18.RELEASE</version>-->
-        <!--</dependency>-->
+         <!--https://mvnrepository.com/artifact/org.springframework/spring-core-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.3.18.RELEASE</version>
+        </dependency>
+
+        <!--Simple cache-->
+        <dependency>
+            <groupId>com.revenat</groupId>
+            <artifactId>simple-cache</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>

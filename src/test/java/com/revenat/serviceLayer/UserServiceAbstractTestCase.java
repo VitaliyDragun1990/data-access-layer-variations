@@ -36,6 +36,7 @@ public abstract class UserServiceAbstractTestCase {
     @After
     public void tearDown() {
         deleteAllUsers();
+        userService.shutdown();
     }
 
     private void deleteAllUsers() {
