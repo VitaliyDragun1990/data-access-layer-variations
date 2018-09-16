@@ -7,12 +7,19 @@
     <!-- Properties -->
     <context:property-placeholder location="classpath:application.properties"/>
 
-    <!--ConnectionManager-->
-    <bean id="connectionManager"
-          class="com.revenat.serviceLayer.dataAPI_JdbcImpl.connectionManagerImpl.MySQLSimpleConnectionManager">
+    <!--ConnectionProperties Value object-->
+    <bean id="connectionProperties"
+          class="com.revenat.serviceLayer.dataAPI_JdbcImpl.connectionManagerImpl.ConnectionProperties">
+        <constructor-arg name="databaseUrl" value="${databaseUrl}"/>
         <constructor-arg name="databaseName" value="${database}"/>
         <constructor-arg name="login" value="${login}"/>
         <constructor-arg name="password" value="${password}"/>
+    </bean>
+
+    <!--ConnectionManager-->
+    <bean id="connectionManager"
+          class="com.revenat.serviceLayer.dataAPI_JdbcImpl.connectionManagerImpl.MySQLSimpleConnectionManager">
+        <constructor-arg name="connectionProperties" ref="connectionProperties"/>
     </bean>
 
     <!--DaoFactory-->

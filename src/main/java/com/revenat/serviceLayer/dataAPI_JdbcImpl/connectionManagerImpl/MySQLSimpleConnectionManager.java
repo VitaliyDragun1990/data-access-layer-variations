@@ -12,15 +12,16 @@ import java.sql.SQLException;
 public class MySQLSimpleConnectionManager implements ConnectionManager {
     private static final Logger logger = LoggerFactory.getLogger(MySQLSimpleConnectionManager.class);
 
-    private static final String BASIC_URL = "jdbc:mysql://localhost:3306/%s?user=%s&password=%s&useSSL=false&allowMultiQueries=true";
+    private final String databaseUrl;
     private final String databaseName;
     private final String login;
     private final String password;
 
-    public MySQLSimpleConnectionManager(String databaseName, String login, String password) {
-        this.databaseName = databaseName;
-        this.login = login;
-        this.password = password;
+    public MySQLSimpleConnectionManager(ConnectionProperties connectionProperties) {
+        this.databaseUrl = connectionProperties.getDatabaseUrl();
+        this.databaseName = connectionProperties.getDatabaseName();
+        this.login = connectionProperties.getLogin();
+        this.password = connectionProperties.getPassword();
     }
 
     @Override
@@ -28,7 +29,7 @@ public class MySQLSimpleConnectionManager implements ConnectionManager {
         try {
             DriverManager.registerDriver(new Driver());
 
-            String url = String.format(BASIC_URL, databaseName, login, password);
+            String url = String.format(databaseUrl, databaseName, login, password);
 
             return DriverManager.getConnection(url);
         } catch (SQLException e) {

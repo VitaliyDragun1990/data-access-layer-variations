@@ -26,7 +26,8 @@ public class User {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @Formula("lower(datediff(curdate(), birth_date)/365)")
+    @Transient
+//    @Formula("lower(datediff(curdate(), birth_date)/365)")
     private int age;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

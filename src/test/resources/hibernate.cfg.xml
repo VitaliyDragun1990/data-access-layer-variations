@@ -5,19 +5,19 @@
 <hibernate-configuration>
     <session-factory>
         <!--Database connection information-->
-        <property name="connection.url">jdbc:mysql://localhost:3306/otus_hibernate_service</property>
-        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.username">root</property>
-        <property name="connection.password">19900225</property>
+        <property name="connection.url">jdbc:h2:mem:test?MODE=MYSQL</property>
+        <property name="connection.driver_class">org.h2.Driver</property>
+        <property name="connection.username">sa</property>
+        <property name="connection.password">sa</property>
 
         <!--Hibernate general properties-->
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
         <property name="hibernate.connection.useSSL">false</property>
         <property name="hibernate.enable_lazy_load_no_trans">true</property>
         <!-- DB schema will be updated if needed -->
-         <property name="hbm2ddl.auto">validate</property>
+         <property name="hbm2ddl.auto">create</property>
 
         <!--Hibernate c3p0 connection pooling configuration-->
         <property name="hibernate.c3p0.acquire_increment">1</property>

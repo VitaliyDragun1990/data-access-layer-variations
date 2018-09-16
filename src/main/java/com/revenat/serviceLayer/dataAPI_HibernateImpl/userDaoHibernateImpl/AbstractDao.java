@@ -25,11 +25,11 @@ public class AbstractDao<T, ID extends Serializable> implements Dao<T, ID> {
     public AbstractDao(Session session) {
         Objects.requireNonNull(session, "Provided session must not be null");
         this.session = session;
-        this.persistentClass = findPersistentClass();
+        this.persistentClass = determinePersistentClass();
     }
 
     @SuppressWarnings("unchecked")
-    private Class<T> findPersistentClass() {
+    private Class<T> determinePersistentClass() {
         return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
@@ -64,7 +64,6 @@ public class AbstractDao<T, ID extends Serializable> implements Dao<T, ID> {
 
     @Override
     public Optional<T> findById(ID id) {
-//        T entity = getSession().load(this.getPersistentClass(), id);
         T entity = getSession().get(this.getPersistentClass(), id);
         return Optional.ofNullable(entity);
     }
