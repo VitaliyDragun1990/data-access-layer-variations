@@ -63,10 +63,10 @@ public class UserServiceHibernateImpl implements UserService {
         this.sessionFactoryProvider.closeSessionFactory(sessionFactory);
     }
 
-    private <R> R runInSession(Function<Session, R> sessionHandler) {
+    private <R> R runInSession(Function<Session, R> command) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
-            R result = sessionHandler.apply(session);
+            R result = command.apply(session);
             transaction.commit();
             return result;
         } catch (RuntimeException e) {
@@ -75,10 +75,10 @@ public class UserServiceHibernateImpl implements UserService {
         }
     }
 
-    private void processInSession(Consumer<Session> sessionHandler) {
+    private void processInSession(Consumer<Session> command) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
-            sessionHandler.accept(session);
+            command.accept(session);
             transaction.commit();
         } catch (RuntimeException e) {
             logger.error(e.getMessage());
